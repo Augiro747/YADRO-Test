@@ -17,11 +17,6 @@ std::vector<std::string> CSV_reader::ReadLine(std::string line)
 		result.push_back(line.substr(0, pos));
 		line = line.substr(pos + 1, line.length() - pos);
 	}
-	std::string temp;
-	temp=result[result.size()-1];
-	temp.pop_back();
-	result.pop_back();
-	result.push_back(temp);
 	return result;
 }
 
@@ -131,7 +126,7 @@ void CSV_reader::ConvertCell(Cell *cell)
 			std::vector<int> arg2 = CellCheck(ARG2);
 			if ((arg1.size() == 0) || (arg2.size() == 0))
 			{
-				cell->result = "errBad_Formula";
+				cell->result = "err";
 				error = "Error! Wrong formula.";
 				return;
 			}
@@ -182,6 +177,7 @@ void CSV_reader::ConvertCell(Cell *cell)
 	}
 	else
 	{
+		cell->result = "err";
 		error = "Error! Empty formula.";
 		return;
 	}
@@ -190,7 +186,6 @@ void CSV_reader::ConvertCell(Cell *cell)
 void CSV_reader::ReadFile(std::string fileName)
 {
 	inputFile = fileName;
-
 	std::ifstream input(inputFile);
 	std::string line;
 
@@ -255,7 +250,7 @@ void CSV_reader::ReadFile(std::string fileName)
 
 void CSV_reader::Show()
 {
-	if (!((error == "")||(error=="Error! Wrong formula."))) return;
+	//if (!((error == "")||(error=="Error! Wrong formula."))) return;
 	//headers output
 	for (int i = 0; i < headers.size(); i++)
 	{
